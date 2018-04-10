@@ -11,6 +11,21 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+import params
+
+DJANGO_SOCIAL_DATA_DB_NAME = 'social_data'
+DJANGO_SOCIAL_DATA_DB_PASS = 'pass'
+DJANGO_SOCIAL_DEFAULT_DB_HOST = 'localhost'
+DJANGO_SOCIAL_DEFAULT_DB_USER= 'django_social'
+DJANGO_SOCIAL_DEFAULT_DB_PASS = 'p0stgresqldjangosocial123'
+DJANGO_SOCIAL_DEFAULT_DB_NAME = 'django_social'
+DJANGO_SOCIAL_DATA_DB_USER = 'django_social'
+DJANGO_SOCIAL_SECRET = '7s5b76pi2l1=2*omfla7s@a)9)19t!!34#n5ge=kv&ff2x99k0'
+DJANGO_SOCIAL_DATA_DB_HOST = 'localhost'
+DJANGO_SOCIAL_DATA_DB_PORT = 5432
+DJANGO_SOCIAL_DEFAULT_DB_PORT=5432
+
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,7 +40,7 @@ SECRET_KEY = os.environ['DJANGO_SOCIAL_SECRET']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['research.jlevente.com']
 
 
 # Application definition
@@ -95,19 +110,19 @@ DATABASES = {
        # 'ENGINE': 'django.db.backends.sqlite3',
         #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ['DJANGO_SOCIAL_DEFAULT_DB_NAME'],
-        'USER':  os.environ['DJANGO_SOCIAL_DEFAULT_DB_USER'],
-        'PASSWORD':  os.environ['DJANGO_SOCIAL_DEFAULT_DB_PASS'],
-        'HOST':  os.environ['DJANGO_SOCIAL_DEFAULT_DB_HOST'],
-        'PORT':  os.environ['DJANGO_SOCIAL_DEFAULT_DB_PORT']
+        'NAME':  params.environ['DJANGO_SOCIAL_DEFAULT_DB_NAME'],
+        'USER':  params.environ['DJANGO_SOCIAL_DEFAULT_DB_USER'],
+        'PASSWORD': params.environ['DJANGO_SOCIAL_DEFAULT_DB_PASS'],
+        'HOST':  params.environ['DJANGO_SOCIAL_DEFAULT_DB_HOST'],
+        'PORT':  params.environ['DJANGO_SOCIAL_DEFAULT_DB_PORT']
     },
     'data_db': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ['DJANGO_SOCIAL_DATA_DB_NAME'],
-        'USER': os.environ['DJANGO_SOCIAL_DATA_DB_USER'],
-        'PASSWORD': os.environ['DJANGO_SOCIAL_DATA_DB_PASS'],
-        'HOST': os.environ['DJANGO_SOCIAL_DATA_DB_HOST'],
-        'PORT': os.environ['DJANGO_SOCIAL_DATA_DB_PORT']
+        'NAME': params.environ['DJANGO_SOCIAL_DATA_DB_NAME'],
+        'USER': params.environ['DJANGO_SOCIAL_DATA_DB_USER'],
+        'PASSWORD': params.environ['DJANGO_SOCIAL_DATA_DB_PASS'],
+        'HOST': params.environ['DJANGO_SOCIAL_DATA_DB_HOST'],
+        'PORT': params.environ['DJANGO_SOCIAL_DATA_DB_PORT']
     }
 }
 

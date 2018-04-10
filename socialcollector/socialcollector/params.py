@@ -1,0 +1,13 @@
+environ = {
+    'DJANGO_SOCIAL_DATA_DB_NAME': 'social_data',
+    'DJANGO_SOCIAL_DATA_DB_PASS': 'pass',
+    'DJANGO_SOCIAL_DEFAULT_DB_HOST': 'localhost',
+    'DJANGO_SOCIAL_DEFAULT_DB_USER': 'django_social',
+    'DJANGO_SOCIAL_DEFAULT_DB_PASS': 'pass',
+    'DJANGO_SOCIAL_DEFAULT_DB_NAME': 'django_social',
+    'DJANGO_SOCIAL_DATA_DB_USER': 'django_social',
+    'DJANGO_SOCIAL_SECRET': '',
+    'DJANGO_SOCIAL_DATA_DB_HOST': 'localhost',
+    'DJANGO_SOCIAL_DATA_DB_PORT': 5432,
+    'DJANGO_SOCIAL_DEFAULT_DB_PORT': 5432,
+}
