@@ -38,9 +38,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = params.environ['DJANGO_SOCIAL_SECRET']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['research.jlevente.com']
+ALLOWED_HOSTS = ['research.jlevente.com', 'www.research.jlevente.com']
 
 
 # Application definition
@@ -174,3 +174,5 @@ AUTHENTICATION_BACKENDS = (
 SITE_ID = 1
 
 LOGIN_REDIRECT_URL = '/'
+
+SECURE_SSL_REDIRECT = True
