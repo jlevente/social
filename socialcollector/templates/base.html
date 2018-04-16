@@ -1,0 +1,51 @@
+<!-- templates/base.html -->
+{% load socialaccount %}
+{% load custom %}
+{% load i18n %}
+{% load static %}
+
+<html>
+    <head>
+        <title>Geo-social data collector</title>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <link href='//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="{% static 'site.css' %}">
+    </head>
+
+	<div>
+	    <div class="page-header">
+            <h1><a href="/">Geo-social data collector</a></h1>
+            {% if user.is_authenticated %}
+            <div class="logged-in-menu">
+	      <form method="post" action="{% url 'account_logout' %}?next=/social">
+	      {% csrf_token %}
+	      {% if redirect_field_value %}
+	      <input type="hidden" name="{{ redirect_field_name }}" value="/"/>
+	      {% endif %}
+	      <button type="submit">Sign out</button>
+	      </form>
+	    </div>
+            <div class="logged-in-menu">
+	      <p>You're logged in!  </p>
+	    </div>
+	    {% endif %}
+            </div>
+<ul class="nav nav-tabs nav-justified">
+        <li {% if nav_bar == 'home' %}class ="active"{% endif %}><a href="/">Home</a></li>
+        <li><a href="#">About</a></li>
+       <li {% if nav_bar == 'social' %}class ="active"{% endif %}><a href="social">Social accounts</a></li>
+        <li><a href="#">Account</a></li>
+    </ul>
+
+{% if nav_bar == 'social' %}
+
+{% block social %}
+{% endblock %}
+
+{% endif %}
+
+
+<div class="footer">
+<a href="privacy">Privacy policy</a>
+</div>

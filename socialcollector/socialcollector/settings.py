@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
-import params
+import socialcollector.params as params
 
 DJANGO_SOCIAL_DATA_DB_NAME = 'social_data'
 DJANGO_SOCIAL_DATA_DB_PASS = 'pass'
@@ -40,7 +40,7 @@ SECRET_KEY = params.environ['DJANGO_SOCIAL_SECRET']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['research.jlevente.com', 'www.research.jlevente.com']
+ALLOWED_HOSTS = ['research.jlevente.com', 'www.research.jlevente.com', '127.0.0.1']
 
 
 # Application definition
@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.meetup',
     'allauth.socialaccount.providers.strava',
     'allauth.socialaccount.providers.inaturalist',
+    'socialcollector',
 ]
 
 MIDDLEWARE = [
@@ -165,6 +166,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder'
+)
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
@@ -173,6 +178,7 @@ AUTHENTICATION_BACKENDS = (
 
 SITE_ID = 1
 
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/social'
+LOGOUT_REDIRECT_URL = '/social'
 
 SECURE_SSL_REDIRECT = True
