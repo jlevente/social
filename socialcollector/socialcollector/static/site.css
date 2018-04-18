@@ -1,5 +1,16 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
+html,body{
+    height: 100%
+}
+#container {
+    min-height: 100%;
+    position:relative;
+}
+#content {
+    padding-bottom: 30px;
+}
+
 .page-header {
       background: #ffd147; /* fallback for old browsers */
   background: -webkit-linear-gradient(right, #2685a5, #58cdf4);
@@ -16,12 +27,13 @@
 
 .logged-in-menu {
   float: right;
+  padding-right: 3px;
   position: relative;
+  color: #ffffff;
 }
 
 .page-header h1, .page-header h1 a, .page-header h1 a:visited, .page-header h1 a:active {
     color: #ffffff;
-    font-size: 36pt;
     text-decoration: none;
 }
 
@@ -43,12 +55,14 @@ h1, h2, h3, h4 {
 .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
     background-color: #FFFF00;
     color: #FFC0CB;
+    padding: 3px;
 }
 
 ul.nav a:hover { 
   color: #2685a5 !important; 
   background: #7ecefc !important;
 }
+
 
 form {
   margin-top: 0;
@@ -57,10 +71,6 @@ form {
 
 .footer {
   position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  padding: 1rem;
   background: #ffd147; /* fallback for old browsers */
   background: -webkit-linear-gradient(right, #58cdf4, #2685a5);
   background: -moz-linear-gradient(right,  #58cdf4, #2685a5);
@@ -69,4 +79,45 @@ form {
   font-family: "Roboto", sans-serif;
   text-align: center;
   color: #ffffff;
+  height: 30px;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
+
+.list-platforms {
+    	margin-left: 20px;
+	margin-right: 20px;
+	margin-top: 30px;
+	margin-bottom: 30px;
+    }
+.list-platforms p{
+    	padding: 10px;
+    }
+
+.jumbotron{
+	padding-top: 10px !important;
+	padding-bottom: 10px !important;
+    	background-color: #f4fafc;
+}
+.thanks {
+	text-align: center;
+	background-color: #ddffe3;
+    }
+.helpmore {
+	text-align: center;
+	background-color: #eaf4ff;
+    }
+.img-responsive {
+	display: block;
+	max-width: 10%;
+	height: auto;
+	margin-left: auto;
+	margin-right: auto;
+}
+.img-float {
+	float: right;
+	max-width: 20%;
+}
+

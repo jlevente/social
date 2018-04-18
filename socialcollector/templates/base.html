@@ -6,16 +6,17 @@
 
 <html>
     <head>
-        <title>Geo-social data collector</title>
+        <title>Geo-social activity research by Levente</title>
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
         <link href='//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="{% static 'site.css' %}">
     </head>
 
-	<div>
+<body>
+	<div id="container">
 	    <div class="page-header">
-            <h1><a href="/">Geo-social data collector</a></h1>
+            <h1><a href="/">Geo-social activity space research</a></h1>
             {% if user.is_authenticated %}
             <div class="logged-in-menu">
 	      <form method="post" action="{% url 'account_logout' %}?next=/social">
@@ -23,21 +24,23 @@
 	      {% if redirect_field_value %}
 	      <input type="hidden" name="{{ redirect_field_name }}" value="/"/>
 	      {% endif %}
-	      <button type="submit">Sign out</button>
+	      <button type="submit" class="btn-info">Sign out</button>
 	      </form>
 	    </div>
             <div class="logged-in-menu">
-	      <p>You're logged in!  </p>
+	      <p>Welcome, you're logged in!</p>
 	    </div>
 	    {% endif %}
             </div>
 <ul class="nav nav-tabs nav-justified">
         <li {% if nav_bar == 'home' %}class ="active"{% endif %}><a href="/">Home</a></li>
-        <li><a href="#">About</a></li>
-       <li {% if nav_bar == 'social' %}class ="active"{% endif %}><a href="social">Social accounts</a></li>
-        <li><a href="#">Account</a></li>
-    </ul>
+        <li {% if nav_bar == 'about' %}class ="active"{% endif %}><a href="/about">About this research</a></li>
+	<li {% if nav_bar == 'howitworks' %}class ="active"{% endif %}><a href="/tool">How it works</a></li>
+       <li {% if nav_bar == 'social' %}class ="active"{% endif %}><a href="/social">Social accounts</a></li>
+	<li {% if nav_bar == 'results' %}class ="active"{% endif %}><a href="/results">Results</a></li>
+    </ul> 
 
+<div id="content">
 {% if nav_bar == 'social' %}
 
 {% block social %}
@@ -45,7 +48,33 @@
 
 {% endif %}
 
+{% if nav_bar == 'home' %}
 
-<div class="footer">
-<a href="privacy">Privacy policy</a>
+{% block basic %}
+{% endblock %}
+
+{% endif %}
+
+{% if nav_bar == 'results' %}
+	{% block results %}
+	{% endblock %}
+{% endif %}
+
+{% if nav_bar == 'contact' %}
+	{% block contact %}
+	{% endblock %}
+{% endif %}
 </div>
+
+
+
+
+	<div class="footer">
+		<a href="/privacy">Privacy policy</a>
+		|
+		<a href="/contact">Get in touch</a>
+
+	</div>
+	</div>
+</body>
+

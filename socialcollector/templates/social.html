@@ -6,77 +6,104 @@
 {% load static %}
 
 {% block social %}
-
+<div class="jumbotron">
+<div class="list-platforms">
 	{% if user.is_authenticated %}
+	<div class="container">
+	<div class="row">
+    	<div class="col-xs-12">
+        	<div class="jumbotron thanks">
+            	<img class="img-thumbnail img-responsive" src="{% static 'high-five.png' %}" alt="High five!">
+		<h3>You're awesome, thanks for helping out!</br>Wanna be more awesome? Just go ahead and connect your other social accounts below!</h3>
+        	</div>
+        </div>
+    	</div>
+	</div>
 
 	{% get_social_accounts user as accounts %}
 
-	<h3>Social apps:</h3>
 	{% if accounts.instagram %}
-	<p>Instagram: {{accounts.instagram.0.extra_data.username}}</p>
+	    <p class="bg-success">Instagram: <a href="https://instagram.com/{{accounts.instagram.0.extra_data.username}}" target="_blank">{{accounts.instagram.0.extra_data.username}}</a> </p>
 	{% else %}
-	<a href="{% provider_login_url 'instagram' process='connect' next='/social'%}">Connect your Instagram</a><br/>
+	    <p class="bg-warning">Connect your <a href="{% provider_login_url 'instagram' process='connect' next='/social'%}">Instagram profile</a></p>
 	{% endif %}
 	{% if accounts.twitter %}
-	<p>Twitter: {{accounts.twitter.0.extra_data.screen_name}}</p>
+	    <p class="bg-success">Twitter: <a href="https://twitter.com/{{accounts.twitter.0.extra_data.screen_name}}" target="_blank"> {{accounts.twitter.0.extra_data.screen_name}}</a></p>
 	{% else %}
-	<a href="{% provider_login_url 'twitter' process='connect' next='/social'%}">Connect your Twitter</a></br>
+	    <p class="bg-warning">Connect your <a href="{% provider_login_url 'twitter' process='connect' next='/social'%}">Twitter profile</a></p>
+		
 	{% endif %}
 	{% if accounts.facebook %}
-	<p>Facebook: {{accounts.facebook.0.extra_data}}</p>
+	<p class="bg-success">Facebook: {{accounts.facebook.0.extra_data.first_name}}</p>
 	{% else %}
-	<a href="{% provider_login_url 'facebook' process='connect' next='/social'%}">Connect your Facebook</a></br>
+	<p class="bg-warning">Connect your <a href="{% provider_login_url 'facebook' process='connect' next='/social'%}"> Facebook profile</a></p>
 	{% endif %}
 	{% if accounts.foursquare %}
-	<p>Foursquare: {{accounts.foursquare.0.extra_data.firstName}}</p>
+	<p class="bg-success">Foursquare: <a href="{{accounts.foursquare.0.extra_data.canonicalUrl}}"  target="_blank">{{accounts.foursquare.0.extra_data.firstName}}</a></p>
 	{% else %}
-	<a href="{% provider_login_url 'foursquare' process='connect' next='/social'%}">Connect your Foursquare</a></br>
+	<p class="bg-warning">Connect your <a href="{% provider_login_url 'foursquare' process='connect' next='/social'%}">Foursquare profile</a></p>
 	{% endif %}
 	{% if accounts.flickr %}
-	<p>Flickr: {{ accounts.flickr.0.extra_data.person.realname|get_item:"_content" }}</p>
+	<p class="bg-success">Flickr: <a href="{{ accounts.flickr.0.extra_data.person.profileurl|get_item:'_content' }}" target="_blank">{{ accounts.flickr.0.extra_data.person.realname|get_item:"_content" }}</a></p>
 	{% else %}
-	<a href="{% provider_login_url 'flickr' process='connect' next='/social'%}">Connect your Flickr</a></br>
+	<p class="bg-warning">Connect your <a href="{% provider_login_url 'flickr' process='connect' next='/social'%}">Flickr profile</a></p>
 	{% endif %}
 	{% if accounts.openstreetmap %}
-	<p>OSM: {{accounts.openstreetmap.0.extra_data.display_name}}</p>
+	<p class="bg-success">OSM: <a href="http://openstreetmap.org/user/{{accounts.openstreetmap.0.extra_data.display_name}}" target="_blank">{{accounts.openstreetmap.0.extra_data.display_name}}</a></p>
 	{% else %}
-	<a href="{% provider_login_url 'openstreetmap' process='connect' next='/social'%}">Connect your OSM</a></br>
+	<p class="bg-warning">Connect your <a href="{% provider_login_url 'openstreetmap' process='connect' next='/social'%}">OSM profile</a></p>
 	{% endif %}
 	{% if accounts.mapillary %}
-	<p>Mapillary: {{accounts.mapillary.0.extra_data.username}}</p>
+	<p class="bg-success">Mapillary: <a href="https://mapillary.com/app/user/{{accounts.mapillary.0.extra_data.username}}" target="_blank">{{accounts.mapillary.0.extra_data.username}}</a></p>
 	{% else %}
-	<a href="{% provider_login_url 'mapillary' process='connect' next='/social'%}">Connect your Mapillary</a></br>
+	<p class="bg-warning">Connect your <a href="{% provider_login_url 'mapillary' process='connect' next='/social'%}">Mapillary profile</a></p>
 	{% endif %}
 	{% if accounts.meetup %}
-	<p>Meetup: {{accounts.meetup.0.extra_data.name}}</p>
+	<p class="bg-success">Meetup: <a href="{{accounts.meetup.0.extra_data.link}}" target="_blank">{{accounts.meetup.0.extra_data.name}}</a></p>
 	{% else %}
-	<a href="{% provider_login_url 'meetup' process='connect' next='/social'%}">Connect your Meetup</a></br>
+	<p class="bg-warning">Connect your <a href="{% provider_login_url 'meetup' process='connect' next='/social'%}">Meetup profile</a></br>
 	{% endif %}
 	{% if accounts.strava %}
-	<p>Strava: {{accounts.strava.0.extra_data.username}}</p>
+	<p class="bg-success">Strava: <a href="https://straval.com/athletes/{{accounts.strava.0.extra_data.id}}" target="_blank">{{accounts.strava.0.extra_data.username}}</a></p>
 	{% else %}
-	<a href="{% provider_login_url 'strava' process='connect' next='/social'%}">Connect your Strava</a></br>
+	<p class="bg-warning">Connect your <a href="{% provider_login_url 'strava' process='connect' next='/social'%}">Strava profile</a></br>
 	{% endif %}
 	{% if accounts.inaturalist %}
-	<p>iNaturalist: {{accounts.inaturalist.0.extra_data.login}}</p>
+	<p class="bg-success">iNaturalist: <a href="{{accounts.inaturalist.0.extra_data.uri}}" target="_blank">{{accounts.inaturalist.0.extra_data.login}}</a></p>
 	{% else %}
-	<a href="{% provider_login_url 'inaturalist' process='connect' next='/social'%}">Connect your iNaturalist</a></br>
+	<p class="bg-warning">Connect your <a href="{% provider_login_url 'inaturalist' process='connect' next='/social'%}">iNaturalist profile</a></br>
+
+
+	<div class="container">
+	<div class="row">
+    	<div class="col-xs-12">
+        	<div class="jumbotron helpmore">
+		<h3><b>+1: Wannna be the best of the best?</b></h3>
+		<p>There's one more thing you could help with then! Consider sharing your Google Location history with me. This information would help "ground truth" your social media activities. As usual, I keep everything confidential and no one will connect this back to your real identity. Visit <a href="/share_google">this page</a> for instructions if you're in!</p>
+        	</div>
+        </div>
+    	</div>
+	</div>
+Want to control what you've shared so far? You can review your existing connections <a href="/social_connections">here</a>.
+
 	{% endif %}
 
 
 	{% else %}
-	<p>Log in with one of the providers below.</p>
-	<a href="{% provider_login_url 'instagram' next='/social' %} ">Log in with instagram</a></br>
-	<a href="{% provider_login_url 'twitter' next='/social' %}">Log in with twitter</a></br>
-	<a href="{% provider_login_url 'facebook' next='/social' %}">Log in with facebook</a></br>
-	<a href="{% provider_login_url 'foursquare' next='/social' %}">Log in with foursquare</a></br>
-	<a href="{% provider_login_url 'flickr' next='/social' %}">Log in with flickr</a></br>
-	<a href="{% provider_login_url 'openstreetmap' next='/social' %}">Log in with osm</a></br>
-	<a href="{% provider_login_url 'mapillary' next='/social' %}">Log in with mapillary</a></br>
-	<a href="{% provider_login_url 'meetup' next='/social' %}">Log in with meetup</a></br>
-	<a href="{% provider_login_url 'strava'  next='/social'%}">Log in with strava</a></br>
-	<a href="{% provider_login_url 'inaturalist' next='/social' %}">Log in with inaturalist</a></br>
+	<h3>Log in with one of your social apps</h3>
+	<h4>If you've previously been here, use one of the providers that's already connected</h4>
+	<p class="bg-info">Log in with <a href="{% provider_login_url 'instagram' next='/social' %} ">Instagram</a></p>
+	<p class="bg-info">Log in with <a href="{% provider_login_url 'twitter' next='/social' %}">Twitter</a></p>
+	<p class="bg-info">Log in with <a href="{% provider_login_url 'facebook' next='/social' %}">Facebook</a></p>
+	<p class="bg-info">Log in with <a href="{% provider_login_url 'foursquare' next='/social' %}">Foursquare/Swarm</a></p>
+	<p class="bg-info">Log in with <a href="{% provider_login_url 'flickr' next='/social' %}">Flickr</a></p>
+	<p class="bg-info">Log in with <a href="{% provider_login_url 'openstreetmap' next='/social' %}">OpenStreetMap</a></p>
+	<p class="bg-info">Log in with <a href="{% provider_login_url 'mapillary' next='/social' %}">Mapillary</a></p>
+	<p class="bg-info">Log in with <a href="{% provider_login_url 'meetup' next='/social' %}">Meetup</a></p>
+	<p class="bg-info">Log in with <a href="{% provider_login_url 'strava'  next='/social'%}">Strava</a></p>
+	<p class="bg-info">Log in with <a href="{% provider_login_url 'inaturalist' next='/social' %}">iNaturalist</a></p>
 	{% endif %}
-
+</div>
+</div>
 {% endblock %}
 
