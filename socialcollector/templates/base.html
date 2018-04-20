@@ -16,7 +16,7 @@
 <body>
 	<div id="container">
 	    <div class="page-header">
-            <h1><a href="/">Geo-social activity space research</a></h1>
+            <h1><a href="/">Geo-social activity research</a></h1>
             {% if user.is_authenticated %}
             <div class="logged-in-menu">
 	      <form method="post" action="{% url 'account_logout' %}?next=/social">
@@ -28,13 +28,13 @@
 	      </form>
 	    </div>
             <div class="logged-in-menu">
-	      <p>Welcome, you're logged in!</p>
+	      <p>You're logged in!</p>
 	    </div>
 	    {% endif %}
             </div>
 <ul class="nav nav-tabs nav-justified">
         <li {% if nav_bar == 'home' %}class ="active"{% endif %}><a href="/">Home</a></li>
-        <li {% if nav_bar == 'about' %}class ="active"{% endif %}><a href="/about">About this research</a></li>
+        <li {% if nav_bar == 'about_research' %}class ="active"{% endif %}><a href="/about">About this research</a></li>
 	<li {% if nav_bar == 'howitworks' %}class ="active"{% endif %}><a href="/tool">How it works</a></li>
        <li {% if nav_bar == 'social' %}class ="active"{% endif %}><a href="/social">Social accounts</a></li>
 	<li {% if nav_bar == 'results' %}class ="active"{% endif %}><a href="/results">Results</a></li>
@@ -62,6 +62,31 @@
 
 {% if nav_bar == 'contact' %}
 	{% block contact %}
+	{% endblock %}
+{% endif %}
+
+{% if nav_bar == 'share_google' %}
+	{% block google %}
+	{% endblock %}
+{% endif %}
+
+{% if nav_bar == 'social_connections' %}
+	{% block socialconnections %}
+	{% endblock %}
+{% endif %}
+
+{% if nav_bar == 'howitworks' %}
+	{% block tool %}
+	{% endblock %}
+{% endif %}
+
+{% if nav_bar == 'about_research' %}
+	{% block about %}
+	{% endblock %}
+{% endif %}
+
+{% if nav_bar == 'privacy' %}
+	{% block privacy %}
 	{% endblock %}
 {% endif %}
 </div>

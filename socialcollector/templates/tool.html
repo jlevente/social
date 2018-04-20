@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% load socialaccount %}
+{% load custom %}
+{% load i18n %}
+{% load static %}
+
+{% block tool %}
+
+<div class="jumbotron">
+                <h2>How it works</h2>
+<div class="container">
+	<div class="row">
+    	<div class="col-xs-12">
+        	<div class="jumbotron keepleft">
+		<h3><b>About the website</b></h3>
+		<p>The website is built on top of the <a href="https://www.djangoproject.com/" target="_blank">Django</a> framework and implements social log in with 3rd party providers using <a href="https://en.wikipedia.org/wiki/OAuth" target="_blank">OAuth</a>. I believe in transparancey so I think you should be able to review and study it. Therefore, you can find everything on my <a href="https://github.com/jlevente/social" target="_blank">GitHub</a>. Here's a quick summary if you don't want to be bothered by the details.</p>
+		<li class="list-group-item active"><h4>I <b>DO NOT</b> do the following:</h4></li>
+		<li class="list-group-item list-group-item-warning">I <b>do not</b> ask for or store passwords. You enter your passwords on the provider's website.</li>
+		<li class="list-group-item list-group-item-warning">I <b>will never</b> post on your social media profiles on your behalf or access any other information, like friends lists or interests.</li>
+		<li class="list-group-item list-group-item-warning">I <b>will never</b> disclose, sell or share your data with 3rd parties.</li>
+		<li class="list-group-item list-group-item-warning">I <b>will never</b> use your data for any other purposes but academic research.</li>
+		<li class="list-group-item list-group-item-warning">I <b>will never</b> attempt to connect your data to your real identity.</li><br />
+		<p>
+		<li class="list-group-item active"><h4>I <b>DO </b> do the following:</h4></li>
+		<li class="list-group-item list-group-item-success">I collect geospatial data from your online profiles - with your explicit permission.</li>
+		<li class="list-group-item list-group-item-success">I use your data for my academic research to advance our understanding of cross-platform user behavior.</li>
+		<li class="list-group-item list-group-item-success">I anonymize your data and remove any information that would allow anyone to identify the real you.</li>
+		<li class="list-group-item list-group-item-success">I will share my findings with the public and will try to publish results in high impact research outlets in my field.</li>
+		<li class="list-group-item list-group-item-success">I do my best to ensure that your data is safe and to address any concerns you might have.</li>
+		</p>
+		<p>My approach is to be open about what I do. The information I collect depend on the provider. A complete list can be found below in the <b>What happens afterwards?</b> section. Please do <a href="/contact">get in touch</a> if you still have some unanswered questions.</p>
+		
+		
+
+        	</div>
+        </div>
+    	</div>
+
+	<div class="row">
+    	<div class="col-xs-12">
+        	<div class="jumbotron keepleft">
+		<h3><b>How does it work?</b></h3>
+		<p>The logic is pretty simple. I am asking you to contribute to my research by allowing me access to your location data in different social media and mapping platforms. Participation is entirely voluntary and you can control what you share with me. If you decide to share your location data (e.g. geotagged Instagram media, OSM edits, etc), I need your explicit authorization. This is done on the provider's website. Here's an example of how it works:</p>
+		<p>
+		<li class="list-group-item active"><h4>Say you decide to share your Instagram posts with me</h4></li>
+<li class="list-group-item">You will be redirected to Instagram's website where you can log in with your credentials</li>
+		<li class="list-group-item">On a separate screen, Instagram will ask you if you allow my application to access your profile.</li>
+		<li class="list-group-item">If you authorize my app, you will be redirected back to his website. My app also receives so called authorization tokens, which I can use to programmatically access your Instagram timeline and save your geotagged posts.</li>
+		<li class="list-group-item">You can repeat the same procedure for other providers listed on the <a href="/social">Social applications</a> page.</li>
+		<li class="list-group-item list-group-item-success">And that's it! You are pretty awesome for helping out. Your help allows me to take my research to the next level!</li></p>
+		<p>Visit the <a href="/social">Social applications</a> page to see the list of providers you can share with me.</p>
+        	</div>
+        </div>
+    	</div>
+
+	<div class="row">
+    	<div class="col-xs-12">
+        	<div class="jumbotron keepleft">
+		<h3><b>What happens afterwards?</b></h3>
+		<p>Once I receive the authorization tokens, I can collect geotagged information from your profiles. This is not automatic so you don't have to worry about me constantly spying on you. Typically, I will run the data collection process once for new people signing up on the website. I will also run a final data collection before conducting the final analysis, sometime in May - unless you revoke my authorization in the meantime. See below for a complete list of information I collect. If you prefer to get technie, check out the <a href="https://github.com/jlevente/social/blob/master/socialcollector/socialcollector/collector.py" target="_blank">data collector</a> class.</p>
+		<li class="list-group-item active"><h4>Platform specific information collected through this service:</h4></li>
+		<li class="list-group-item">Facebook: <a href="https://developers.facebook.com/docs/graph-api/reference/user/tagged_places" target="_blank">User Tagged Places</a></li>
+		<li class="list-group-item">Twitter: <a href="https://developer.twitter.com/en/docs/tweets/timelines/api-reference/get-statuses-user_timeline.html" target="_blank">User Timeline</a></li>
+		<li class="list-group-item">Instagram: <a href="https://www.instagram.com/developer/endpoints/users/" target="_blank">media/recent</a></li>
+		<li class="list-group-item">Flickr: <a href="https://www.flickr.com/services/api/flickr.people.getPhotos.html" target="_blank">people.getPhotos</a></li>
+		<li class="list-group-item">Foursquare/Swarm: <a href="https://developer.foursquare.com/docs/api/users/checkins" target="_blank">checkins</a></li>
+		<li class="list-group-item">Meetup: <a href="https://www.meetup.com/meetup_api/docs/2/events/" target="_blank">events</a></li>
+		<li class="list-group-item">OpenStreetMap: <a href="https://wiki.openstreetmap.org/wiki/API_v0.6#Read:_GET_.2Fapi.2F0.6.2Fchangeset.2F.23id.3Finclude_discussion.3Dtrue" target="_blank">changesets</a></li>
+		<li class="list-group-item">Mapillary: <a href="https://www.mapillary.com/developer/api-documentation/#search-sequences" target="_blank">sequences</a></li>
+		<li class="list-group-item">Strava: <a href="http://developers.strava.com/docs/reference/#api-Activities-getLoggedInAthleteActivities" target="_blank">activities</a></li>
+		<li class="list-group-item">iNaturalist: <a href="https://www.inaturalist.org/pages/api+reference#get-observations-username" target="_blank">observations</a></li>
+		
+        	</div>
+        </div>
+    	</div>
+
+	<div class="row">
+    	<div class="col-xs-12">
+        	<div class="jumbotron keepleft">
+		<h3><b>This is sensitive information. What steps did you take to protect my data?</b></h3>
+		<p>Excellent question! To ensure privacy, I have set up secure SSL certificates so your connection is encrypted. The website is running on an AWS EC2 instance in the cloud. Further, your user data (i.e. tokens) and location data (e.g. Insta posts) are stored in separate databases (an AWS RDS instance) to make sure they can't be easily connected. The data DB is only accessible from the machine runnig the Django app and from the secure University of Florida network.</p>
+        	</div>
+        </div>
+    	</div>
+
+	<div class="row">
+    	<div class="col-xs-12">
+        	<div class="jumbotron keepleft">
+		<h3><b>How can I opt out?</b></h3>
+		<p>While it makes me sad, it is your choice to opt out if you'd like. You have the following options:</p>
+		<li class="list-group-item">Remove single platforms from the list of authenticated services on <a href="/social_connections">this page</a>. This will delete your authorization tokens and will prevent me from getting more data.</li><br />
+		<li class="list-group-item">Send an email to <a href="mailto:levente.juhasz@ufl.edu">levente.juhasz@ufl.edu</a> and ask to be removed.</li><br />
+		<li class="list-group-item">You can manually revoke permissions associated with my data access on the provider's website. I have collected these link below to make it easier for you. This step invalidates your access tokens therefore it is the most secure way to ensure no one is accessing your data. Click on the links below and look for apps names "UF Geomatics" or "Geo-spatial data collector" created by me.<br/><br/>
+<a href="https://www.instagram.com/accounts/manage_access/" target="_blank">Instagram</a><br/>
+<a href="https://twitter.com/settings/applications" target="_blank">Twitter</a><br/>
+<a href="https://www.facebook.com/settings?tab=applications" target="_blank">Facebook</a><br/>
+<a href="https://foursquare.com/settings/connections" target="_blank">Foursquare</a><br/>
+<a href="https://www.flickr.com/services/auth/list.gne" target="_blank">Flickr</a><br/>
+<a href="https://www.meetup.com/account/oauth_apps/" target="_blank">Meetup</a><br/>
+<a href="https://www.openstreetmap.org/user/your_account/oauth_clients" target="_blank">OpenStreetMap</a><br/>
+<a href="https://www.mapillary.com/app/settings/apps" target="_blank">Mapillary</a><br/>
+<a href="https://www.strava.com/settings/apps" target="_blank">Strava</a><br/>
+<a href="https://www.inaturalist.org/oauth/applications/228#" target="_blank">iNaturalist</a><br/>
+</li>
+        	</div>
+        </div>
+    	</div>
+
+	
+</div>
+{% endblock %}

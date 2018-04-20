@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% load socialaccount %}
+{% load custom %}
+{% load i18n %}
+{% load static %}
+
+{% block google %}
+
+<div class="jumbotron">
+                <h2><b>Sharing your Google Location History</b></h2>
+		<p>Wow, you've come this far. That's awesome, you have no idea how much it helps! On this page you'll learn how to export your Location History and how to send it to me. The process of exporting your Google Location History involves some manual steps. But just don't worry, I'll guide you through it. It's pretty easy. So let's get to it!</p>
+<div class="container">
+<li class="list-group-item active">
+		<h3>1. Open Google Takeout</h3></li>
+<li class="list-group-item">The basic idea behind Google Takout is that the data you generate is yours (think Youtube history, visited places, etc.), therefore you should be able to export it. You can use it to save a copy of your visited places and locations on your hard drive. So, just visit <a href="/share_google" target="_blank">takeout.google.com</a> and log in, if necessary.</li><br/>
+
+
+<li class="list-group-item active"><h3>2. Select data to archive</h3></li>
+<li class="list-group-item">First, unselect all options (no need to export ALL your Google data)
+<img class="img-thumbnail img-responsive img-50" src="{% static 'takeout_selectnone.jpg' %}"></li>
+<li class="list-group-item">Then scroll down and select <b>Location History</b> and <b>Maps (your places)</b>. Make sure to Select export your history in the JSON format. <img class="img-thumbnail img-responsive img-50" src="{% static 'select_lochistory.jpg' %}"></li>
+<li class="list-group-item">Finally scroll down and hit <b>Next</b>.</li><br />
+
+
+<li class="list-group-item active"><h3>3. Finalize your export</h3></li>
+<li class="list-group-item">On this page, you can control the archive type, the size and the delivery method. Default settings should work so you can leave everything unchanged.</li>
+<li class="list-group-item">Click on <b>Create Archive</b> and check your inbox (or your cloud storage if you changed the delivery method) in a couple minutes. Your <b>Location History</b> and <b>Places</b> are ready!</li><br />
+   
+
+<li class="list-group-item active"><h3>4. Send your archive to me</h3>
+<li class="list-group-item">If your archive is relatively small (say less than 10MB) you can directly email it to <a href="mailto:levente.juhasz@ufl.edu">levente.juhasz@ufl.edu</a>. Don't be shy, say hi! And don't forget to tell me at least one of your profiles you authenticated with. Otherwise I won't be able to connect it to your online profiles.</li>
+<li class="list-group-item">If your archive is larger than 10MB, it's best to upload your extract somewhere (Google Drive, Dropbox, etc.) and send me the link. Also, tell me one of your social accounts you authenticated with along with the Google Location history. Remember, if I don't know which accounts this data belongs to, I won't be able to use it. Send your archives to <a href="mailto:levente.juhasz@ufl.edu">levente.juhasz@ufl.edu</a>.</li>
+<li class="list-group-item">Something doesn't work or you're not sure how to share Google Location History with me? No problem, send a mail to <a href="mailto:levente.juhasz@ufl.edu">levente.juhasz@ufl.edu</a> and we can troubleshoot.</li><br />
+
+<div class="row">
+    	<div class="col-xs-12">
+        	<div class="jumbotron thanks">
+            	
+		<h3>If you got to this point, you're the bomb! Helping out not only with your online profiles but going the extra mile and sending your Google Location History as well? That deserves some credit! With that being said, if we ever meet in person, just poke me in the back and I'm buying coffee! For real. High five!</h3>
+<img class="img-thumbnail img-responsive" src="{% static 'high-five.png' %}" alt="High five!">
+        	</div>
+        </div>
+</div>
+
+</div>
+{% endblock %}

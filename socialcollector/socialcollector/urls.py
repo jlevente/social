@@ -24,5 +24,10 @@ urlpatterns = [
     path('', views.HomePageView.as_view(), name='basic'),
     path('social/', views.SocialPageView.as_view(), name='social'),
     path('contact/', views.ContactPageView.as_view(), name='contact'),
-    path('results/', views.ResultsPageView.as_view(), name='results')
+    path('results/', views.ResultsPageView.as_view(), name='results'),
+    path('share_google/', views.GooglePageView.as_view(), name='share_google'),
+    path('social_connections/', views.SocialConnectionsPageView.as_view(), name='social_connections'),
+    path('about/', views.AboutPageView.as_view(), name='about_research'),
+    path('tool/', views.HowItWorksPageView.as_view(), name='howitworks'),
+    path('privacy/', views.PrivacyPageView.as_view(), name='privacy'),
 ]

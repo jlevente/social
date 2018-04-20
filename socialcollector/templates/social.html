@@ -84,7 +84,7 @@
         </div>
     	</div>
 	</div>
-Want to control what you've shared so far? You can review your existing connections <a href="/social_connections">here</a>.
+By logging in with 3rd party applications and connecting your profiles, you authorize my tools to collect basic information (such as user names and timelines) from your online accounts. Want to control what you've authorized so far? You can review your existing connections <a href="/social_connections">here</a>.
 
 	{% endif %}
 
@@ -102,7 +102,10 @@ Want to control what you've shared so far? You can review your existing connecti
 	<p class="bg-info">Log in with <a href="{% provider_login_url 'meetup' next='/social' %}">Meetup</a></p>
 	<p class="bg-info">Log in with <a href="{% provider_login_url 'strava'  next='/social'%}">Strava</a></p>
 	<p class="bg-info">Log in with <a href="{% provider_login_url 'inaturalist' next='/social' %}">iNaturalist</a></p>
+
+By logging in with 3rd party applications and connecting your profiles, you authorize my tools to collect basic information (such as user names and timelines) from your online accounts.
 	{% endif %}
+
 </div>
 </div>
 {% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'socialaccount/base.html' %}
+
+{% load i18n %}
+
+
+{% block socialconnections %}
+
+{% load account %}
+{% load socialaccount %}
+{% load custom %}
+<div class="jumbotron">
+                <h2><b>Your existing social connections</b></h2>
+		{% if user.is_authenticated %}
+		<p>You have connected the following social applications so far. I would hate to see you leave but it's totally up to you (:sadpanda:). When removing your social accounts your tokens will be deleted, meaning that my tools won't be able to collect more information from you.</p>
+
+
+{% get_social_accounts user as x %}
+
+
+
+
+
+<form method="post" action="{% url 'socialaccount_connections' %}">
+{% csrf_token %}
+
+<fieldset>
+
+{% for acc in x.items %}
+
+{% with acc.1.0.get_provider_account as account %}
+<div>
+<label for="id_account_{{ acc.1.0.id }}">
+<input id="id_account_{{ acc.1.0.id }}" type="radio" name="account" value="{{ acc.1.0.id }}"/>
+<span class="socialaccount_provider {{ acc.1.0.provider }} {{ account.get_brand.id }}">{{account.get_brand.name}}</span>
+{{ account }}
+</label>
+</div>
+{% endwith %}
+{% endfor %}
+
+<div>
+<button class="btn-info" type="submit" target="/social">{% trans 'Remove' %}</button>
+</div>
+
+</fieldset>
+
+</form>
+
+
+
+		<br />Removing the last social account is not currently possible automatically. If you still want to do that (i.e. be completely removed from the study), just send an email to <a href="mailto:levente.juhasz@ufl.edu">levente.juhasz@ufl.edu</a>. No hard feelings. You can tell me more about your reasons if you'd like so that I have a better understanding of the issue and can serve others better.
+		{% else %}
+		<p>Please <a href="/social">log in</a> with one of your social accounts first.</p>
+		{% endif %}
+
+ </div>
+
+{% endblock %}
