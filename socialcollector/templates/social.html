@@ -73,7 +73,7 @@
 	{% else %}
 	<p class="bg-warning">Connect your <a href="{% provider_login_url 'inaturalist' process='connect' next='/social'%}">iNaturalist profile</a></br>
 
-
+	{% endif %}
 	<div class="container">
 	<div class="row">
     	<div class="col-xs-12">
@@ -85,8 +85,6 @@
     	</div>
 	</div>
 By logging in with 3rd party applications and connecting your profiles, you authorize my tools to collect basic information (such as user names and timelines) from your online accounts. Want to control what you've authorized so far? You can review your existing connections <a href="/social_connections">here</a>.
-
-	{% endif %}
 
 
 	{% else %}
