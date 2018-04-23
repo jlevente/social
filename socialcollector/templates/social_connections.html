@@ -11,7 +11,7 @@
 <div class="jumbotron">
                 <h2><b>Your existing social connections</b></h2>
 		{% if user.is_authenticated %}
-		<p>You have connected the following social applications so far. I would hate to see you leave but it's totally up to you (:sadpanda:). When removing your social accounts your tokens will be deleted, meaning that my tools won't be able to collect more information from you.</p>
+		<p>You have connected the following social applications so far. I would hate to see you leave but it's totally up to you (:sadpanda:). When you remove your social accounts below, your authorization tokens will be deleted from my database. This means that my tools won't be able to collect more information from you.</p>
 
 
 {% get_social_accounts user as x %}
@@ -48,7 +48,7 @@
 
 
 
-		<br />Removing the last social account is not currently possible automatically. If you still want to do that (i.e. be completely removed from the study), just send an email to <a href="mailto:levente.juhasz@ufl.edu">levente.juhasz@ufl.edu</a>. No hard feelings. You can tell me more about your reasons if you'd like so that I have a better understanding of the issue and can serve others better.
+		<br />Removing the last social account is not currently possible automatically. If you still want to do that (i.e. be completely removed from the study and hava all your data erased), just send an email to <a href="mailto:levente.juhasz@ufl.edu">levente.juhasz@ufl.edu</a>. No hard feelings. You can tell me more about your reasons if you'd like so that I have a better understanding of the issue and can serve others better.
 		{% else %}
 		<p>Please <a href="/social">log in</a> with one of your social accounts first.</p>
 		{% endif %}

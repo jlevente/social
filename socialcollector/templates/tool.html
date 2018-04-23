@@ -29,7 +29,7 @@
 		<li class="list-group-item list-group-item-success">I will share my findings with the public and will try to publish results in high impact research outlets in my field.</li>
 		<li class="list-group-item list-group-item-success">I do my best to ensure that your data is safe and to address any concerns you might have.</li>
 		</p>
-		<p>My approach is to be open about what I do. The information I collect depend on the provider. A complete list can be found below in the <b>What happens afterwards?</b> section. Please do <a href="/contact">get in touch</a> if you still have some unanswered questions.</p>
+		<p>My approach is to be open about what I do. The information I collect varies from platform to platfor. A complete list can be found below in the <b>What happens afterwards?</b> section. Still got questions? Please <a href="/contact">get in touch</a>.</p>
 		
 		
 
@@ -41,7 +41,7 @@
     	<div class="col-xs-12">
         	<div class="jumbotron keepleft">
 		<h3><b>How does it work?</b></h3>
-		<p>The logic is pretty simple. I am asking you to contribute to my research by allowing me access to your location data in different social media and mapping platforms. Participation is entirely voluntary and you can control what you share with me. If you decide to share your location data (e.g. geotagged Instagram media, OSM edits, etc), I need your explicit authorization. This is done on the provider's website. Here's an example of how it works:</p>
+		<p>The logic is pretty simple. I am asking you to contribute to my research by allowing me access to your location data in different social media and mapping platforms. Participation is entirely voluntary and you can control what you share with me. If you decide to share your location data (e.g. geotagged Instagram posts, OSM edits, etc), I need your explicit authorization. This is done on the provider's website. Here's an example of how it works:</p>
 		<p>
 		<li class="list-group-item active"><h4>Say you decide to share your Instagram posts with me</h4></li>
 <li class="list-group-item">You will be redirected to Instagram's website where you can log in with your credentials</li>
@@ -79,7 +79,7 @@
     	<div class="col-xs-12">
         	<div class="jumbotron keepleft">
 		<h3><b>This is sensitive information. What steps did you take to protect my data?</b></h3>
-		<p>Excellent question! To ensure privacy, I have set up secure SSL certificates so your connection is encrypted. The website is running on an AWS EC2 instance in the cloud. Further, your user data (i.e. tokens) and location data (e.g. Insta posts) are stored in separate databases (an AWS RDS instance) to make sure they can't be easily connected. The data DB is only accessible from the machine runnig the Django app and from the secure University of Florida network.</p>
+		<p>Excellent question! To ensure privacy, I have set up secure SSL certificates so your connection is encrypted. The website is running on an AWS EC2 instance in the cloud. Further, your user data (i.e. tokens) and location data (e.g. Insta posts) are stored in separate databases (Postgres AWS RDS instances) to make sure they can't be easily connected. Data is only accessible from the machine runnig the Django app and from the secure University of Florida network.</p>
         	</div>
         </div>
     	</div>
@@ -88,10 +88,9 @@
     	<div class="col-xs-12">
         	<div class="jumbotron keepleft">
 		<h3><b>How can I opt out?</b></h3>
-		<p>While it makes me sad, it is your choice to opt out if you'd like. You have the following options:</p>
+		<p>While seeing you leave makes me sad, it is your choice to opt out if you'd like. You have the following options:</p>
 		<li class="list-group-item">Remove single platforms from the list of authenticated services on <a href="/social_connections">this page</a>. This will delete your authorization tokens and will prevent me from getting more data.</li><br />
-		<li class="list-group-item">Send an email to <a href="mailto:levente.juhasz@ufl.edu">levente.juhasz@ufl.edu</a> and ask to be removed.</li><br />
-		<li class="list-group-item">You can manually revoke permissions associated with my data access on the provider's website. I have collected these link below to make it easier for you. This step invalidates your access tokens therefore it is the most secure way to ensure no one is accessing your data. Click on the links below and look for apps names "UF Geomatics" or "Geo-spatial data collector" created by me.<br/><br/>
+		<li class="list-group-item">You can manually revoke permissions associated with my data access on the provider's website. I have collected these link below to make it easier for you. This step invalidates your access tokens, therefore it is the most secure way to ensure no one is accessing your data. Click on the links below and look for apps names "UF Geomatics" or "Geo-spatial data collector" created by me.<br/><br/>
 <a href="https://www.instagram.com/accounts/manage_access/" target="_blank">Instagram</a><br/>
 <a href="https://twitter.com/settings/applications" target="_blank">Twitter</a><br/>
 <a href="https://www.facebook.com/settings?tab=applications" target="_blank">Facebook</a><br/>
@@ -102,7 +101,8 @@
 <a href="https://www.mapillary.com/app/settings/apps" target="_blank">Mapillary</a><br/>
 <a href="https://www.strava.com/settings/apps" target="_blank">Strava</a><br/>
 <a href="https://www.inaturalist.org/oauth/applications/228#" target="_blank">iNaturalist</a><br/>
-</li>
+</li><br />
+		<li class="list-group-item">Don't want to bother with anythin? Send an email to <a href="mailto:levente.juhasz@ufl.edu">levente.juhasz@ufl.edu</a> and ask to be removed.</li><br />
         	</div>
         </div>
     	</div>

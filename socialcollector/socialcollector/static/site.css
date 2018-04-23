@@ -137,3 +137,28 @@ form {
 	max-width: 40%;
 }
 
+.facebook_button {
+    display: inline-block;
+
+    background: #627aac url(facebook_small.png) left no-repeat;
+
+    border-top: 1px solid #29447e;
+    border-right: 1px solid #29447e;
+    border-bottom: 1px solid #1a356e;
+    border-left: none;
+
+    height: 30px;
+
+    padding-right: 7px;
+    padding-left: 40px;
+
+    font-weight: bold;
+    font-size: 16px;
+    color: white;
+    text-decoration: none;
+    font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
+    line-height: 22px;
+
+    cursor: pointer;
+}
+
