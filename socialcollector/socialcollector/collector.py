@@ -409,6 +409,43 @@ class DataCollector():
                 more = False
         db.commit()
 
+    def getFacebookPlaces(self, user_params, db):
+        url = "https://graph.facebook.com/v2.12/me/tagged_places?access_token=" + user_params['access_token']
+
+        cursor = db.cursor()
+        insert_sql = '''
+            insert into facebook_places (user_id, created_at, name, geom, raw) values (%s, %s, %s, st_setsrid(st_makepoint(%s, %s), 4326), %s::json)
+        '''
+        insert_sql_nogeom = '''
+            insert into facebook_places (user_id, created_at, name, raw) values (%s, %s, %s, %s::json)
+
+        '''
+        curr_url = url
+        more = True
+        while more:
+            resp = requests.get(curr_url)
+            if resp.status_code == 200:
+                resp = resp.json()
+                for place in resp:
+                    created_at = parser.parse(place['created_time'])
+                    name = place['place']['name']
+                    try:
+                        lat = place['place']['location']['latitude']
+                        lng = place['place']['location']['longitude']
+                    except KeyError:
+                        lat = None
+                    if not lat:
+                        cursor.execute(insert_sql_nogeom, (user_params['user_django'], created_at, name, json.dumps(place)))
+                    else:
+                        cursor.execute(insert_sql, (user_params['user_django'], created_at, name, lng, lat, json.dumps(place)))
+
+            if 'next' in resp['paging'].keys():
+                more = True
+                curr_url = resp['paging']['next']
+            else:
+                more = False
+        db.commit()
+
 def findNextLink(headers):
     try:
         links = headers['link']
@@ -432,6 +469,5 @@ def findNextPage(headers):
         return curr_page + 1
     else:
         return False
-    
-    
+
 
