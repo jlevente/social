@@ -24,6 +24,7 @@ MAPILLARY_LIMIT = 1000
 STRAVA_LIMIT = 100
 INAT_LIMIT = 200
 MEETUP_LIMIT = 200
+FB_LIMIT = 100
 
 class DBHandler():
     def __init__(self):
@@ -410,7 +411,7 @@ class DataCollector():
         db.commit()
 
     def getFacebookPlaces(self, user_params, db):
-        url = "https://graph.facebook.com/v2.12/me/tagged_places?access_token=" + user_params['access_token']
+        url = "https://graph.facebook.com/v2.12/me/tagged_places?access_token=" + user_params['access_token'] + "&limit=" + str(FB_LIMIT)
 
         cursor = db.cursor()
         insert_sql = '''
