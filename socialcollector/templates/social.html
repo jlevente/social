@@ -35,9 +35,13 @@
 		
 	{% endif %}
 	{% if accounts.facebook %}
-	<p class="bg-success">Facebook: <a href="https://facebook.com" target="_blank">{{accounts.facebook.0.extra_data.first_name}}</a></p>
+	<p class="bg-success">Facebook: <a href="https://facebook.com" target="_blank">{{accounts.facebook.0.extra_data.first_name}}</a><br/>
+	<span style="font-size: 12px; color: #ff0000;">App pending Facebook review.</span><span style="font-size: 12px;"> Currently connets to Facebook but does not have permissions to collect geotagged posts.</span>
+	</p>
 	{% else %}
-	<p class="bg-warning">Connect your <a href="{% provider_login_url 'facebook' process='connect' next='/social'%}"> Facebook profile</a></p>
+	<p class="bg-warning">Connect your <a href="{% provider_login_url 'facebook' process='connect' next='/social'%}"> Facebook profile</a><br/>
+	<span style="font-size: 12px; color: #ff0000;">App pending Facebook review.</span><span style="font-size: 12px;"> Currently connets to Facebook but does not have permissions to collect geotagged posts.</span>
+	</p>
 	{% endif %}
 	{% if accounts.foursquare %}
 	<p class="bg-success">Foursquare: <a href="{{accounts.foursquare.0.extra_data.canonicalUrl}}"  target="_blank">{{accounts.foursquare.0.extra_data.firstName}}</a></p>
@@ -93,7 +97,9 @@ By logging in with 3rd party applications and connecting your profiles, you auth
 	<h4>If you've previously been here, use one of the providers that's already connected</h4>
 	<p class="bg-info">Log in with <a href="{% provider_login_url 'instagram' next='/social' %} ">Instagram</a></p>
 	<p class="bg-info">Log in with <a href="{% provider_login_url 'twitter' next='/social' %}">Twitter</a></p>
-	<p class="bg-info">Log in with <a href="{% provider_login_url 'facebook' next='/social' %}"> <button class="facebook_button">Facebook</button></a></p>
+	<p class="bg-info">Log in with <a href="{% provider_login_url 'facebook' next='/social' %}"> <button class="facebook_button">Facebook</button></a><br/>
+	<span style="font-size: 12px; color: #ff0000;">App pending Facebook review.</span><span style="font-size: 12px;"> Currently connets to Facebook but does not have permissions to collect geotagged posts.</span>
+	</p>
 	<p class="bg-info">Log in with <a href="{% provider_login_url 'foursquare' next='/social' %}">Foursquare/Swarm</a></p>
 	<p class="bg-info">Log in with <a href="{% provider_login_url 'flickr' next='/social' %}">Flickr</a></p>
 	<p class="bg-info">Log in with <a href="{% provider_login_url 'openstreetmap' next='/social' %}">OpenStreetMap</a></p>
