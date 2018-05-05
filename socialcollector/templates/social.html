@@ -69,7 +69,7 @@
 	<p class="bg-warning">Connect your <a href="{% provider_login_url 'meetup' process='connect' next='/social'%}">Meetup profile</a></br>
 	{% endif %}
 	{% if accounts.strava %}
-	<p class="bg-success">Strava: <a href="https://straval.com/athletes/{{accounts.strava.0.extra_data.id}}" target="_blank">{{accounts.strava.0.extra_data.username}}</a></p>
+	<p class="bg-success">Strava: <a href="https://strava.com/athletes/{{accounts.strava.0.extra_data.id}}" target="_blank">{{accounts.strava.0.extra_data.firstname}}  {{accounts.strava.0.extra_data.lastname}} </a></p>
 	{% else %}
 	<p class="bg-warning">Connect your <a href="{% provider_login_url 'strava' process='connect' next='/social'%}">Strava profile</a></br>
 	{% endif %}
