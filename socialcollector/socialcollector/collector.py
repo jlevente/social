@@ -54,15 +54,13 @@ class DBHandler():
                     "client_id":  u[6],
                     "client_secret": u[7],
                 }
-                print params
+                #print params
                 try:
-                    print 'CHECK FOR LOGIN!!!!'
                     login = u[8]['login']
                     print login
                     params['login'] = login
                     data.append(params)
                 except:
-                    print 'ERROR IN LOGIN CHECK'
                     data.append(params)
         except Exception, e:
             print(Exception, e)
