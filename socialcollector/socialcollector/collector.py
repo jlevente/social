@@ -447,10 +447,23 @@ class DataCollector():
                     if 'created' in meetup.keys():
                         created_at = datetime.fromtimestamp(meetup['created']/1000.0)
                     else:
-                        created_at = None
-                    venue_name = meetup['venue']['name']
-                    lat = meetup['venue']['lat']
-                    lng = meetup['venue']['lon']
+                        try:
+                            created_at = datetime.fromtimestamp(meetup['time']/1000.0)
+                        except KeyError:
+                            created_at = None
+                    if 'venue' in meetup.keys():
+                        venue_name = meetup['venue']['name']
+                        lat = meetup['venue']['lat']
+                        lng = meetup['venue']['lon']
+                    else:
+                        try:
+                            venue_name = meetup['group']['name']
+                            lat = meetup['group']['lat']
+                            lng = meetup['venue']['lon']
+                        except KeyError:
+                            venue_name = None
+                            lat = None
+                            lng = None
                     cursor.execute(insert_sql, (user_params['user_django'], created_at, venue_name, lng, lat, json.dumps(meetup)))
             next_link = findNextLink(headers)
             if next_link:
