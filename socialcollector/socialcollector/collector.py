@@ -444,7 +444,10 @@ class DataCollector():
                 headers = resp.headers
                 resp = resp.json()
                 for meetup in resp:
-                    created_at = datetime.fromtimestamp(meetup['created']/1000.0)
+                    if 'created' in meetup.keys():
+                        created_at = datetime.fromtimestamp(meetup['created']/1000.0)
+                    else:
+                        created_at = None
                     venue_name = meetup['venue']['name']
                     lat = meetup['venue']['lat']
                     lng = meetup['venue']['lon']
