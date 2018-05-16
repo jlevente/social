@@ -9,6 +9,7 @@ import oauth2
 from datetime import datetime
 from dateutil import parser, tz
 from xml.etree import ElementTree as ET
+import sys
 
 DJANGO_DB = settings.DATABASES['default']
 DATA_DB = settings.DATABASES['data_db']
@@ -521,4 +522,32 @@ def findNextPage(headers):
     else:
         return False
 
+def get_args():
+    import argparse
+    p = argparse.ArgumentParser(description="Control from the command line")
+    p.add_argument('-a',  '--all',  help='Get params from all users', action='store_true')
+    p.add_argument('-i', '--index', help='run collector for this index (comma separated) in params list')
+    return p.parse_args()
+
+def main():
+    args = vars(get_args())
+    all = args['all']
+    accounts = args['index']
+
+    db = DBHandler()
+    coll = DataCollector()
+
+    if all:
+        userparams = db.getAllParams()
+    else:
+        sys.exit(0)
+    if accounts:
+        accounts = [int(i) for i in accounts.split(',')]
+        for acc in accounts:
+            db.downloadData(userparams[acc], coll)
+    else:
+        sys.exit(0)
+
+if __name__ == "__main__":
+    main()
 
