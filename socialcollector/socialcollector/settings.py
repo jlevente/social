@@ -13,20 +13,6 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 import os
 import socialcollector.params as params
 
-DJANGO_SOCIAL_DATA_DB_NAME = 'social_data'
-DJANGO_SOCIAL_DATA_DB_PASS = 'pass'
-DJANGO_SOCIAL_DEFAULT_DB_HOST = 'localhost'
-DJANGO_SOCIAL_DEFAULT_DB_USER= 'django_social'
-DJANGO_SOCIAL_DEFAULT_DB_PASS = 'p0stgresqldjangosocial123'
-DJANGO_SOCIAL_DEFAULT_DB_NAME = 'django_social'
-DJANGO_SOCIAL_DATA_DB_USER = 'django_social'
-DJANGO_SOCIAL_SECRET = '7s5b76pi2l1=2*omfla7s@a)9)19t!!34#n5ge=kv&ff2x99k0'
-DJANGO_SOCIAL_DATA_DB_HOST = 'localhost'
-DJANGO_SOCIAL_DATA_DB_PORT = 5432
-DJANGO_SOCIAL_DEFAULT_DB_PORT=5432
-
-
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
