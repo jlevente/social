@@ -236,17 +236,18 @@ class DataCollector():
                 checkins = checkins.json()
                 for checkin in checkins['response']['checkins']['items']:
                     created_at = checkin['createdAt']
-                    venue_name = checkin['venue']['name']
-                    if 'private' in checkin['venue'].keys():
-                        lat = None
-                        lng = None
-                    else:
-                        lat = checkin['venue']['location']['lat']
-                        lng = checkin['venue']['location']['lng']
-                    if lat is None:
-                        cursor.execute(insert_sql_private, (user_params['user_django'], datetime.utcfromtimestamp(created_at), venue_name, json.dumps(checkin)))
-                    else:
-                        cursor.execute(insert_sql, (user_params['user_django'], datetime.utcfromtimestamp(created_at), venue_name,  lng, lat, json.dumps(checkin)))
+                    if 'venue' in checkin.keys():
+                        venue_name = checkin['venue']['name']
+                        if 'private' in checkin['venue'].keys():
+                            lat = None
+                            lng = None
+                        else:
+                            lat = checkin['venue']['location']['lat']
+                            lng = checkin['venue']['location']['lng']
+                        if lat is None:
+                            cursor.execute(insert_sql_private, (user_params['user_django'], datetime.utcfromtimestamp(created_at), venue_name, json.dumps(checkin)))
+                        else:
+                            cursor.execute(insert_sql, (user_params['user_django'], datetime.utcfromtimestamp(created_at), venue_name,  lng, lat, json.dumps(checkin)))
                 if len(checkins['response']['checkins']['items']) == FOURSQUARE_LIMIT:
                     more = True
                     curr_url = url + '&beforeTimestamp=' + str(created_at)
