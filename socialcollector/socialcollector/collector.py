@@ -33,7 +33,7 @@ class DBHandler():
 
     def getAllParams(self):
         sql = '''
-          select provider.id as acc_id, provider.provider, provider.user_id, provider.uid, token.token, token.token_secret, provider.client_id, provider.secret, provider.extra_data::json->login as login
+          select provider.id as acc_id, provider.provider, provider.user_id, provider.uid, token.token, token.token_secret, provider.client_id, provider.secret, provider.extra_data::json
                 from (select distinct on (provider, user_id) acc.id, acc.provider, acc.user_id, acc.uid, app.id app_id, app.client_id, app.secret, acc.extra_data
                 from socialaccount_socialaccount acc, socialaccount_socialapp app where
                     acc.provider = app.provider order by provider, user_id, id asc) provider,
@@ -54,9 +54,17 @@ class DBHandler():
                     "token_secret":  u[5],
                     "client_id":  u[6],
                     "client_secret": u[7],
-                    "login": u[8]
                 }
-                data.append(params)
+                print params
+                try:
+                    print 'CHECK FOR LOGIN!!!!'
+                    login = u[8]['login']
+                    print login
+                    params['login'] = login
+                    data.append(params)
+                except:
+                    print 'ERROR IN LOGIN CHECK'
+                    data.append(params)
         except Exception, e:
             print(Exception, e)
 
@@ -64,7 +72,7 @@ class DBHandler():
 
     def getUserParams(self, user_id, platform):
         sql = '''
-          select provider.id as acc_id, provider.provider, provider.user_id, provider.uid, token.token, token.token_secret, provider.client_id, provider.secret, provider.extra_data::json->'login'
+          select provider.id as acc_id, provider.provider, provider.user_id, provider.uid, token.token, token.token_secret, provider.client_id, provider.secret, provider.extra_data::json
                 from 
                     (
                     select distinct on (provider, user_id) acc.id, acc.provider, acc.user_id, acc.uid, app.id app_id, app.client_id, app.secret, acc.extra_data from 
@@ -89,11 +97,42 @@ class DBHandler():
                     "token_secret":  user[5],
                     "client_id":  user[6],
                     "client_secret": user[7],
-                    "login": user[8]
                 }
+            try:
+                login = json.loads(user[8])['login']
+                params['login'] = login
+            except:
+                pass
         except Exception, e:
             print(Exception, e)
 
+        return params
+
+    def downloadData(self, params, collector):
+        print 'User id: %s,platform: %s' % (params['user_django'], params['platform'])
+        if params['platform'] == 'instagram':
+            collector.getInstaMedia(params, self.data_db)
+        elif params['platform'] == 'twitter':
+            collector.getTweets(params, self.data_db)
+        elif params['platform'] == 'foursquare':
+            collector.getFoursquareCheckins(params, self.data_db)
+        elif params['platform'] == 'flickr':
+            collector.getFlickrPhotos(params, self.data_db)
+        elif params['platform'] == 'openstreetmap':
+            collector.getOSMChangesets(params, self.data_db)
+        elif params['platform'] == 'mapillary':
+            collector.getMapillarySequences(params, self.data_db)
+        elif params['platform'] == 'strava':
+            collector.getStravaActivities(params, self.data_db)
+        elif params['platform'] == 'inaturalist':
+            collector.getInatObservations(params, self.data_db)
+        elif params['platform'] == 'meetup':
+            collector.getMeetups(params, self.data_db)
+
+    def getNewUserParams(self):
+        data_cur = self.data_db.cursor()
+        params = self.getAllParams()
+        fb_users = data_cur.execute('select array_agg(distinct user_id) from facebook_places')
         return params
 
     def setupTables(self):
@@ -121,19 +160,22 @@ class DataCollector():
             resp = requests.get(curr_url)
             if resp.status_code == 200:
                 data = resp.json()
-            for media in data['data']:
-                id = media['id']
-                if media['location']:
-                    loc_name = media['location']['name']
-                    lat = media['location']['latitude']
-                    lng = media['location']['longitude']
-                    cursor.execute(insert_sql, (user_params['user_django'], datetime.utcfromtimestamp(int(media['created_time'])),  loc_name, lng, lat, json.dumps(media)))
+                for media in data['data']:
+                    id = media['id']
+                    if media['location'] and 'latitude' in media['location'].keys():
+                        loc_name = media['location']['name']
+                        lat = media['location']['latitude']
+                        lng = media['location']['longitude']
+                        cursor.execute(insert_sql, (user_params['user_django'], datetime.utcfromtimestamp(int(media['created_time'])),  loc_name, lng, lat, json.dumps(media)))
+                    else:
+                        cursor.execute(insert_sql_noloc, (user_params['user_django'], datetime.utcfromtimestamp(int(media['created_time'])), json.dumps(media)))
+                db.commit()
+                if len(data['data']) == INSTA_LIMIT:
+                    more = True
+                    curr_url = url + "&max_id=" + id
+                    db.commit()
                 else:
-                    cursor.execute(insert_sql_noloc, (user_params['user_django'], datetime.utcfromtimestamp(int(media['created_time'])), json.dumps(media)))
-            db.commit()
-            if len(data['data']) == INSTA_LIMIT:
-                more = True
-                curr_url = url + "&max_id=" + id
+                    more = False
             else:
                 more = False
 
@@ -171,10 +213,10 @@ class DataCollector():
                 if len(content) == TWEET_LIMIT:
                     more = True
                     curr_url = url + '&max_id=' + str(id)
+                    db.commit()
                 else:
                     more = False
             else:
-                print resp
                 print resp
 
             db.commit()
@@ -211,6 +253,7 @@ class DataCollector():
                 if len(checkins['response']['checkins']['items']) == FOURSQUARE_LIMIT:
                     more = True
                     curr_url = url + '&beforeTimestamp=' + str(created_at)
+                    db.commit()
                 else:
                     more = False
             else:
@@ -232,7 +275,6 @@ class DataCollector():
         more = True
         curr_url = url
         while more:
-            
             resp = requests.get(curr_url)
             if resp.status_code == 200:
                 photos = resp.json()
@@ -247,6 +289,9 @@ class DataCollector():
                 if photos['photos']['page'] < photos['photos']['pages']:
                     more = True
                     curr_url = url + '&page=' + str(photos['photos']['page'] + 1)
+                    db.commit()
+                    if created_at < datetime(2014, 1, 1):
+                        more = False
                 else:
                     more = False
             else:
@@ -283,9 +328,10 @@ class DataCollector():
                 if len(changesets) == OSM_LIMIT:
                     more = True
                     curr_url = url + str(created_at)
+                    db.commit()
                 else:
                     more = False
-                if created_at.replace(tzinfo=None) < datetime(2015, 1, 1):
+                if changesets and created_at.replace(tzinfo=None) < datetime(2015, 1, 1):
                     more = False
             
         db.commit()
@@ -311,6 +357,7 @@ class DataCollector():
                 if next_link:
                     more = True
                     curr_url = next_link
+                    db.commit()
                 else:
                     more = False
         db.commit()
@@ -350,6 +397,7 @@ class DataCollector():
             if len(activity) == STRAVA_LIMIT:
                 more = True
                 curr_url = url + '&before=' + str(int((created_at.replace(tzinfo=None) - datetime(1970,1,1)).total_seconds()))
+                db.commit()
             else:
                 more = False
         db.commit()
@@ -377,6 +425,7 @@ class DataCollector():
             if cont:
                 more = True
                 curr_url = url + '&page=' + str(cont)
+                db.commit()
             else:
                 more = False
         db.commit()
@@ -406,6 +455,7 @@ class DataCollector():
             if next_link:
                 more = True
                 curr_url = next_link
+                db.commit()
             else:
                 more = False
         db.commit()
