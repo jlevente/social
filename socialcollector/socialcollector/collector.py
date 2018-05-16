@@ -1,7 +1,7 @@
 '''
 
 '''
-import settings
+import params
 import psycopg2
 import requests
 import json
@@ -11,8 +11,6 @@ from dateutil import parser, tz
 from xml.etree import ElementTree as ET
 import sys
 
-DJANGO_DB = settings.DATABASES['default']
-DATA_DB = settings.DATABASES['data_db']
 
 utc_zone = tz.gettz('UTC')
 
@@ -29,8 +27,8 @@ FB_LIMIT = 100
 
 class DBHandler():
     def __init__(self):
-        self.django_db = psycopg2.connect(host=DJANGO_DB['HOST'], port=DJANGO_DB['PORT'], user=DJANGO_DB['USER'], password=DJANGO_DB['PASSWORD'], dbname=DJANGO_DB['NAME'])
-        self.data_db = psycopg2.connect(host=DATA_DB['HOST'], port=DATA_DB['PORT'], user=DATA_DB['USER'], password=DATA_DB['PASSWORD'], dbname=DATA_DB['NAME'])
+        self.data_db = psycopg2.connect(host=params.environ['DJANGO_SOCIAL_DATA_DB_HOST'], port=params.environ['DJANGO_SOCIAL_DATA_DB_PORT'], user=params.environ['DJANGO_SOCIAL_DATA_DB_USER'], password=params.environ['DJANGO_SOCIAL_DATA_DB_PASS'], dbname=params.environ['DJANGO_SOCIAL_DATA_DB_NAME'])
+        self.django_db = psycopg2.connect(host=params.environ['DJANGO_SOCIAL_DEFAULT_DB_HOST'], port=params.environ['DJANGO_SOCIAL_DEFAULT_DB_PORT'], user=params.environ['DJANGO_SOCIAL_DEFAULT_DB_USER'], password=params.environ['DJANGO_SOCIAL_DEFAULT_DB_PASS'], dbname=params.environ['DJANGO_SOCIAL_DEFAULT_DB_NAME'])
 
     def getAllParams(self):
         sql = '''
