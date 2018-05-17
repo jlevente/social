@@ -392,12 +392,12 @@ class DataCollector():
                     else:
                         continue
                     cursor.execute(insert_sql, (user_params['user_django'], created_at, json.dumps(geom), json.dumps(activity)))
-            if len(activity) == STRAVA_LIMIT:
-                more = True
-                curr_url = url + '&before=' + str(int((created_at.replace(tzinfo=None) - datetime(1970,1,1)).total_seconds()))
-                db.commit()
-            else:
-                more = False
+                if len(resp) == STRAVA_LIMIT:
+                    more = True
+                    curr_url = url + '&before=' + str(int((created_at.replace(tzinfo=None) - datetime(1970,1,1)).total_seconds()))
+                    db.commit()
+                else:
+                    more = False
         db.commit()
 
     def getInatObservations(self, user_params, db):
