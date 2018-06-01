@@ -2,7 +2,7 @@
 
 '''
 import params
-import psycopg2
+import psycopg2, psycopg2.extras
 import requests
 import json
 import oauth2
@@ -10,7 +10,7 @@ from datetime import datetime
 from dateutil import parser, tz
 from xml.etree import ElementTree as ET
 import sys
-
+import math
 
 utc_zone = tz.gettz('UTC')
 
@@ -24,6 +24,8 @@ STRAVA_LIMIT = 100
 INAT_LIMIT = 200
 MEETUP_LIMIT = 200
 FB_LIMIT = 100
+GOOGLE_POINT_BATCH = 20000
+GOOGLE_LINE_BATCH = 1000
 
 class DBHandler():
     def __init__(self):
@@ -340,8 +342,12 @@ class DataCollector():
         insert_sql = '''
             insert into mapillary_sequences (user_id, created_at, geom, raw) values (%s, %s, st_setsrid(st_geomfromgeojson(%s), 4326), %s::json)
         '''
+        insert_sql_fast = '''
+            insert into mapillary_sequences (user_id, created_at, geom, raw) values %s
+        '''
         more = True
         curr_url = url
+        data_insert = []
         while more:
             resp = requests.get(curr_url)
             if resp.status_code == 200:
@@ -350,14 +356,16 @@ class DataCollector():
                 for sequence in resp['features']:
                     created_at = parser.parse(sequence['properties']['created_at'])
                     geom = sequence['geometry']
-                    cursor.execute(insert_sql, (user_params['user_django'], created_at, json.dumps(geom), json.dumps(sequence)))
+                    data_insert.append((user_params['user_django'], created_at, json.dumps(geom), json.dumps(sequence)))
+                    #cursor.execute(insert_sql, (user_params['user_django'], created_at, json.dumps(geom), json.dumps(sequence)))
                 next_link = findNextLink(headers)
                 if next_link:
                     more = True
                     curr_url = next_link
-                    db.commit()
+                    #db.commit()
                 else:
                     more = False
+        psycopg2.extras.execute_values(cursor, insert_sql_fast, data_insert, template='(%s, %s, st_setsrid(st_geomfromgeojson(%s), 4326), %s::json)')
         db.commit()
 
     def getStravaActivities(self, user_params, db):
@@ -541,6 +549,92 @@ def get_args():
     p.add_argument('-a',  '--all',  help='Get params from all users', action='store_true')
     p.add_argument('-i', '--index', help='run collector for this index (comma separated) in params list')
     return p.parse_args()
+
+
+def deg2rad(deg):
+    return deg * (math.pi/180)
+
+def getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2):
+    R = 6371 # Radius of the earth in km
+    dlat = deg2rad(lat2-lat1)
+    dlon = deg2rad(lon2-lon1)
+    a = math.sin(dlat/2) * math.sin(dlat/2) + \
+    math.cos(deg2rad(lat1)) * math.cos(deg2rad(lat2)) * \
+    math.sin(dlon/2) * math.sin(dlon/2)
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
+    d = R * c # Distance in km
+    return d
+    
+def parseGoogleLocationHistory(user_id, file, db_handler, types=['point', 'line']):
+    import io
+    db = db_handler.data_db
+    with io.open(file, encoding='utf-8') as f:
+        data = json.load(f)
+        geom = {
+          "type": "LineString",
+          "coordinates": [
+          #  [102.0, 0.0], [103.0, 1.0], [104.0, 0.0], [105.0, 1.0]
+            ]
+          }
+        last = None
+        point_cur = db.cursor()
+        line_cur = db.cursor()
+        insert_point_sql = '''
+            INSERT INTO google_loc_points (user_id, created_at, accuracy, geom) values %s
+        '''
+        insert_line_sql = '''
+            INSERT INTO google_loc_lines (user_id, start_time, end_time, geom) values %s
+        '''
+        points_insert = []
+        lines_insert = []
+        point_counter = 0
+        line_counter = 0
+        for loc in data['locations']:
+            time = datetime.utcfromtimestamp(int(loc['timestampMs'])/1000.0)
+            point = [loc['longitudeE7']/10000000.0, loc['latitudeE7']/10000000.0]
+            if 'accuracy' in loc.keys():
+                acc = loc['accuracy']
+            else:
+                acc= None
+            if 'point' in types:
+                points_insert.append((user_id,  time, acc) + tuple(point))
+                point_counter += 1
+                if point_counter % GOOGLE_POINT_BATCH == 0:
+                    # write something here
+                    print 'Writing %s points to table (total: %s)' % (str(GOOGLE_POINT_BATCH), str(point_counter))
+                    psycopg2.extras.execute_values(point_cur,  insert_point_sql, points_insert, template='(%s, %s, %s, st_setsrid(st_makepoint(%s, %s),4326))')
+                    points_insert = []
+                    db.commit()
+            if 'line' in types:
+                if last:
+                    prev_point = [last['longitudeE7']/10000000.0, last['latitudeE7']/10000000.0]
+                    timedelta = (int(loc['timestampMs']) - int(last['timestampMs'])) / 1000.0 / 60.0
+                    distancedelta = getDistanceFromLatLonInKm(point[1], point[0], prev_point[1], prev_point[0])
+                    if timedelta < -20 or distancedelta > 10:
+                        # build line here from last
+                        segment_start = datetime.utcfromtimestamp(int(last['timestampMs'])/1000.0)
+                        #print 'timedelta: %s, distancedelta: %s' % (str(timedelta), str(distancedelta))
+                        #print 'Segment started: %s, ended: %s' % (str(segment_start),  str(segment_end))
+                        #print 'Segment points: %s' % str(len(geom['coordinates']))
+                        lines_insert.append((user_id,  segment_start, segment_end, json.dumps(geom)))
+                        line_counter += 1
+                        # Insert into postgres
+                        if line_counter % GOOGLE_LINE_BATCH == 0:
+                            print 'Writing %s lines to table (total: %s)' % (str(GOOGLE_LINE_BATCH), str(line_counter))
+                            psycopg2.extras.execute_values(line_cur, insert_line_sql, lines_insert, template='(%s, %s, %s,st_setsrid(st_geomfromgeojson(%s),4326))')
+                            db.commit()
+                            lines_insert = []
+                        geom['coordinates'] = []
+                if len(geom['coordinates']) == 0:
+                    segment_end = time
+                geom['coordinates'].append(point)
+                last = loc
+        # insert last
+        if 'point' in types:
+            psycopg2.extras.execute_values(point_cur,  insert_point_sql, points_insert, template='(%s, %s, %s, st_setsrid(st_makepoint(%s, %s),4326))')
+        if 'line' in types:
+            psycopg2.extras.execute_values(line_cur, insert_line_sql, lines_insert, template='(%s, %s, %s,st_setsrid(st_geomfromgeojson(%s),4326))')
+        db.commit()
 
 def main():
     args = vars(get_args())
